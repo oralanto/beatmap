@@ -1,0 +1,21 @@
+{
+  "name": "beatmap",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Discover hip-hop & street dance events (battles, workshops, shows) as a list or on a map.",
+  "workspaces": ["apps/*", "packages/*"],
+  "engines": { "node": ">=20.9" },
+  "scripts": {
+    "dev": "concurrently -n api,web -c blue,magenta \"npm run dev -w @beatmap/api\" \"npm run dev -w @beatmap/web\"",
+    "build": "npm run build -w @beatmap/api && npm run build -w @beatmap/web",
+    "start": "concurrently -n api,web -c blue,magenta \"npm run start -w @beatmap/api\" \"npm run start -w @beatmap/web\"",
+    "scrape": "npm run scrape -w @beatmap/api",
+    "test": "npm run test -w @beatmap/api",
+    "typecheck": "npm run typecheck -w @beatmap/api && npm run typecheck -w @beatmap/web",
+    "lint": "npm run lint -w @beatmap/web"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0",
+    "typescript": "~5.9.3"
+  }
+}

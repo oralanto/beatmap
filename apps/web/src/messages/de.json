@@ -1,0 +1,94 @@
+{
+  "meta": {
+    "title": "Finde deine Tanzevents",
+    "description": "Hip-Hop- und Streetdance-Battles, Workshops, Shows und Festivals in Deutschland, Frankreich und weltweit. Stöbere in der Liste oder entdecke die Karte."
+  },
+  "nav": {
+    "list": "Events",
+    "map": "Karte",
+    "language": "Sprache"
+  },
+  "home": {
+    "title": "Finde deine Tanzevents",
+    "subtitle": "Hip-Hop- & Streetdance-Battles, Workshops, Shows und mehr, in deiner Nähe und weltweit.",
+    "results": "{count, plural, =0 {Keine Events} one {# Event} other {# Events}}",
+    "emptyTitle": "Keine Events passen zu deinen Filtern",
+    "emptyText": "Wähle einen größeren Zeitraum oder entferne einen Filter.",
+    "showMore": "Mehr anzeigen",
+    "error": "Events sind vorübergehend nicht verfügbar. Bitte versuche es gleich noch einmal."
+  },
+  "filters": {
+    "title": "Filter",
+    "open": "Filter",
+    "search": "Titel, Ort oder Stadt suchen",
+    "when": "Wann",
+    "genre": "Art",
+    "style": "Tanzstil",
+    "clear": "Alle zurücksetzen",
+    "showResults": "Ergebnisse anzeigen",
+    "whenOptions": {
+      "all": "Alle kommenden",
+      "month": "Diesen Monat",
+      "3months": "Nächste 3 Monate"
+    }
+  },
+  "genres": {
+    "battle": "Battle",
+    "show": "Show",
+    "workshop": "Workshop",
+    "conference": "Konferenz",
+    "festival": "Festival",
+    "jam": "Jam",
+    "competition": "Wettbewerb",
+    "camp": "Camp",
+    "other": "Sonstiges"
+  },
+  "styles": {
+    "hip-hop": "Hip-Hop",
+    "all-style": "All-Style",
+    "breaking": "Breaking",
+    "popping": "Popping",
+    "locking": "Locking",
+    "electro": "Electro",
+    "waacking": "Waacking",
+    "house": "House",
+    "krump": "Krump",
+    "dancehall": "Dancehall",
+    "afro": "Afro"
+  },
+  "card": {
+    "away": "{km} km entfernt",
+    "today": "Läuft gerade"
+  },
+  "map": {
+    "nearMe": "In meiner Nähe",
+    "locating": "Standort wird ermittelt…",
+    "denied": "Standort nicht verfügbar. Erlaube den Zugriff im Browser, um Events in deiner Nähe zu sehen.",
+    "radius": "Umkreis",
+    "anywhere": "Überall",
+    "results": "{count, plural, =0 {Keine Events auf der Karte} one {# Event auf der Karte} other {# Events auf der Karte}}",
+    "loading": "Events werden geladen…",
+    "error": "Events konnten nicht geladen werden."
+  },
+  "event": {
+    "back": "Alle Events",
+    "when": "Datum",
+    "where": "Ort",
+    "allDay": "Ganztägig",
+    "startsAt": "Beginn um {time}",
+    "viewSource": "Auf {source} ansehen",
+    "addToCalendar": "Zum Kalender hinzufügen",
+    "showOnMap": "Auf der Karte zeigen",
+    "openInMaps": "In Karten öffnen",
+    "styles": "Stile",
+    "source": "Informationen von {source}. Prüfe immer die offizielle Seite auf aktuelle Details."
+  },
+  "notFound": {
+    "title": "Seite nicht gefunden",
+    "text": "Diese Seite existiert nicht.",
+    "home": "Zurück zu den Events"
+  },
+  "footer": {
+    "text": "BeatMap ist ein Open-Source-Projekt. Die Daten stammen aus Drittquellen und können sich ändern."
+  }
+}

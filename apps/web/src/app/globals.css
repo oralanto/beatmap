@@ -1,0 +1,36 @@
+@import "tailwindcss";
+@import "maplibre-gl/dist/maplibre-gl.css";
+
+@theme {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: #fafafa;
+  color: #18181b;
+}
+
+.beatmap-popup .maplibregl-popup-content {
+  padding: 0;
+  border-radius: 1rem;
+  overflow: hidden;
+  width: min(280px, 78vw);
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.2);
+}
+
+.beatmap-popup .maplibregl-popup-close-button {
+  z-index: 2;
+  top: 4px;
+  right: 4px;
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px;
+  background: rgb(0 0 0 / 0.35);
+  color: white;
+  font-size: 18px;
+  line-height: 1;
+}
