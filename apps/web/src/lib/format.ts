@@ -1,35 +1,63 @@
 import type { Genre } from "@beatmap/shared";
 
-export const INTL_LOCALE: Record<string, string> = { en: "en-US", fr: "fr-FR", de: "de-DE" };
+export const INTL_LOCALE: Record<string, string> = {
+  en: "en-US",
+  fr: "fr-FR",
+  de: "de-DE",
+};
 
 const utc = (d: string) => new Date(`${d}T00:00:00Z`);
 
-export function formatDateRange(start: string, end: string, locale: string): string {
+export function formatDateRange(
+  start: string,
+  end: string,
+  locale: string,
+): string {
   const loc = INTL_LOCALE[locale] ?? "en-US";
   const showYear = utc(start).getUTCFullYear() !== new Date().getUTCFullYear();
-  const base: Intl.DateTimeFormatOptions = { timeZone: "UTC", day: "numeric", month: "short" };
+  const base: Intl.DateTimeFormatOptions = {
+    timeZone: "UTC",
+    day: "numeric",
+    month: "short",
+  };
   if (showYear) base.year = "numeric";
   if (start === end) {
-    return new Intl.DateTimeFormat(loc, { ...base, weekday: "short" }).format(utc(start));
+    return new Intl.DateTimeFormat(loc, { ...base, weekday: "short" }).format(
+      utc(start),
+    );
   }
   return new Intl.DateTimeFormat(loc, base).formatRange(utc(start), utc(end));
 }
 
-export function formatLongDate(start: string, end: string, locale: string): string {
+export function formatLongDate(
+  start: string,
+  end: string,
+  locale: string,
+): string {
   const loc = INTL_LOCALE[locale] ?? "en-US";
-  const o: Intl.DateTimeFormatOptions = { timeZone: "UTC", weekday: "long", day: "numeric", month: "long", year: "numeric" };
+  const o: Intl.DateTimeFormatOptions = {
+    timeZone: "UTC",
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  };
   const f = new Intl.DateTimeFormat(loc, o);
-  return start === end ? f.format(utc(start)) : f.formatRange(utc(start), utc(end));
+  return start === end
+    ? f.format(utc(start))
+    : f.formatRange(utc(start), utc(end));
 }
 
 export function flagEmoji(code: string | null): string {
   if (!code || code.length !== 2) return "🌍";
-  return String.fromCodePoint(...[...code.toUpperCase()].map((c) => 0x1f1e6 + c.charCodeAt(0) - 65));
+  return String.fromCodePoint(
+    ...[...code.toUpperCase()].map((c) => 0x1f1e6 + c.charCodeAt(0) - 65),
+  );
 }
 
 export const GENRE_GRADIENT: Record<Genre, string> = {
-  battle: "from-rose-500 to-orange-500",
-  show: "from-violet-600 to-fuchsia-500",
+  show: "from-rose-500 to-orange-500",
+  battle: "from-violet-600 to-fuchsia-500",
   workshop: "from-emerald-500 to-teal-500",
   conference: "from-sky-500 to-indigo-500",
   festival: "from-amber-500 to-pink-500",
