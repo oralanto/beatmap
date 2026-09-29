@@ -68,7 +68,8 @@
     "anywhere": "Anywhere",
     "results": "{count, plural, =0 {No events on the map} one {# event on the map} other {# events on the map}}",
     "loading": "Loading events…",
-    "error": "Could not load events."
+    "error": "Could not load events.",
+    "mapUnavailable": "Interactive map unavailable. Events are shown as a list."
   },
   "event": {
     "back": "All events",

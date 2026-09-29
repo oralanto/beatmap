@@ -68,7 +68,8 @@
     "anywhere": "Überall",
     "results": "{count, plural, =0 {Keine Events auf der Karte} one {# Event auf der Karte} other {# Events auf der Karte}}",
     "loading": "Events werden geladen…",
-    "error": "Events konnten nicht geladen werden."
+    "error": "Events konnten nicht geladen werden.",
+    "mapUnavailable": "Interaktive Karte nicht verfügbar. Events werden als Liste angezeigt."
   },
   "event": {
     "back": "Alle Events",

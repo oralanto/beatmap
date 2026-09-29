@@ -68,7 +68,8 @@
     "anywhere": "Partout",
     "results": "{count, plural, =0 {Aucun événement sur la carte} one {# événement sur la carte} other {# événements sur la carte}}",
     "loading": "Chargement des événements…",
-    "error": "Impossible de charger les événements."
+    "error": "Impossible de charger les événements.",
+    "mapUnavailable": "Carte interactive indisponible. Les événements sont affichés sous forme de liste."
   },
   "event": {
     "back": "Tous les événements",

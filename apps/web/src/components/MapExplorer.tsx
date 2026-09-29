@@ -86,6 +86,7 @@ export default function MapExplorer({ meta }: { meta: Meta | null }) {
   const skipFitRef = useRef(!!centerParam);
 
   const [mapReady, setMapReady] = useState(false);
+  const [mapUnavailable, setMapUnavailable] = useState(false);
   const [popupEl, setPopupEl] = useState<HTMLDivElement | null>(null);
   const [selected, setSelected] = useState<EventDTO[]>([]);
   const [events, setEvents] = useState<EventDTO[]>([]);
@@ -153,13 +154,20 @@ export default function MapExplorer({ meta }: { meta: Meta | null }) {
     if (!containerRef.current) return;
     const [clat, clng] = (centerParam ?? "").split(",").map(Number);
     const hasCenter = Number.isFinite(clat) && Number.isFinite(clng);
-    const map = new maplibregl.Map({
-      container: containerRef.current,
-      style: STYLE_URL,
-      center: hasCenter ? [clng!, clat!] : [8, 47],
-      zoom: hasCenter ? 13 : 3.6,
-      attributionControl: { compact: true },
-    });
+    let map: MLMap;
+    try {
+      map = new maplibregl.Map({
+        container: containerRef.current,
+        style: STYLE_URL,
+        center: hasCenter ? [clng!, clat!] : [8, 47],
+        zoom: hasCenter ? 13 : 3.6,
+        attributionControl: { compact: true },
+      });
+    } catch {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- report external map initialization failure
+      setMapUnavailable(true);
+      return;
+    }
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
     mapRef.current = map;
     setPopupEl(document.createElement("div"));
@@ -296,6 +304,24 @@ export default function MapExplorer({ meta }: { meta: Meta | null }) {
       <div className="absolute inset-0">
         <div ref={containerRef} className="h-full w-full" />
       </div>
+      {mapUnavailable && (
+        <section className="absolute inset-0 overflow-y-auto bg-zinc-100 px-4 pb-24 pt-24 lg:pl-[380px] lg:pt-6" aria-live="polite">
+          <div className="mx-auto max-w-5xl">
+            <h1 className="mb-4 text-lg font-semibold text-zinc-800">{t("mapUnavailable")}</h1>
+            {status === "loading" ? (
+              <p className="text-sm text-zinc-600">{t("loading")}</p>
+            ) : status === "error" ? (
+              <p className="text-sm text-zinc-600">{t("error")}</p>
+            ) : events.length === 0 ? (
+              <p className="text-sm text-zinc-600">{countLabel}</p>
+            ) : (
+              <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                {events.map((event) => <EventCard key={event.id} event={event} compact />)}
+              </div>
+            )}
+          </div>
+        </section>
+      )}
 
       {/* Desktop side panel */}
       <aside className="absolute bottom-4 left-4 top-4 z-10 hidden w-[340px] flex-col gap-5 overflow-y-auto rounded-2xl bg-white/95 p-5 shadow-xl backdrop-blur lg:flex">
