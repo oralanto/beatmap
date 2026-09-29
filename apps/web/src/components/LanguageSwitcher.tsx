@@ -18,7 +18,11 @@ export function LanguageSwitcher() {
   const qs = useSearchParams().toString();
 
   return (
-    <div role="group" aria-label={t("language")} className="flex rounded-full border border-zinc-200 bg-white p-0.5 text-xs font-semibold">
+    <div
+      role="group"
+      aria-label={t("language")}
+      className="flex rounded-full border border-zinc-200 bg-white p-0.5 text-xs font-semibold"
+    >
       {routing.locales.map((l) => (
         <Link
           key={l}

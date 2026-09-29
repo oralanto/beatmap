@@ -2,10 +2,21 @@ import { CalendarDays, MapPin } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import type { EventDTO } from "@beatmap/shared";
 import { Link } from "@/i18n/navigation";
-import { flagEmoji, formatDateRange, GENRE_GRADIENT, isHappeningNow } from "@/lib/format";
+import {
+  flagEmoji,
+  formatDateRange,
+  GENRE_GRADIENT,
+  isHappeningNow,
+} from "@/lib/format";
 import { GenreIcon } from "./GenreIcon";
 
-export function EventCard({ event, compact = false }: { event: EventDTO; compact?: boolean }) {
+export function EventCard({
+  event,
+  compact = false,
+}: {
+  event: EventDTO;
+  compact?: boolean;
+}) {
   const t = useTranslations();
   const locale = useLocale();
   const place = [event.venue, event.city].filter(Boolean).join(" · ");
@@ -21,12 +32,20 @@ export function EventCard({ event, compact = false }: { event: EventDTO; compact
       >
         {event.imageUrl && (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={event.imageUrl} alt="" className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
+          <img
+            src={event.imageUrl}
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover"
+            loading="lazy"
+          />
         )}
         <span className="relative rounded-full bg-black/25 px-2.5 py-1 text-xs font-semibold backdrop-blur">
           {t(`genres.${event.genre}`)}
         </span>
-        <GenreIcon genre={event.genre} className={`relative opacity-90 ${compact ? "size-7" : "size-10"}`} />
+        <GenreIcon
+          genre={event.genre}
+          className={`relative opacity-90 ${compact ? "size-7" : "size-10"}`}
+        />
       </div>
 
       <div className={`flex flex-1 flex-col gap-2 ${compact ? "p-3" : "p-4"}`}>
@@ -43,14 +62,17 @@ export function EventCard({ event, compact = false }: { event: EventDTO; compact
           )}
         </div>
 
-        <h3 className={`font-semibold leading-snug text-zinc-900 group-hover:text-violet-700 ${compact ? "line-clamp-2 text-sm" : "line-clamp-2 text-lg"}`}>
+        <h3
+          className={`font-semibold leading-snug text-zinc-900 group-hover:text-violet-700 ${compact ? "line-clamp-2 text-sm" : "line-clamp-2 text-lg"}`}
+        >
           {event.title}
         </h3>
 
         <div className="flex items-start gap-1.5 text-sm text-zinc-600">
           <MapPin className="mt-0.5 size-4 shrink-0" aria-hidden />
           <span className="line-clamp-2">
-            <span aria-hidden>{flagEmoji(event.countryCode)}</span> {place || event.country}
+            <span aria-hidden>{flagEmoji(event.countryCode)}</span>{" "}
+            {place || event.country}
             {event.distanceKm !== undefined && (
               <span className="ml-1 font-medium text-zinc-900">
                 · {t("card.away", { km: Math.round(event.distanceKm) })}
@@ -62,7 +84,10 @@ export function EventCard({ event, compact = false }: { event: EventDTO; compact
         {!compact && event.styles.length > 0 && (
           <ul className="mt-auto flex flex-wrap gap-1.5 pt-1">
             {event.styles.slice(0, 4).map((s) => (
-              <li key={s} className="rounded-md bg-zinc-100 px-2 py-0.5 text-xs text-zinc-700">
+              <li
+                key={s}
+                className="rounded-md bg-zinc-100 px-2 py-0.5 text-xs text-zinc-700"
+              >
                 {t(`styles.${s}`)}
               </li>
             ))}

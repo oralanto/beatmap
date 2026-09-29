@@ -1,4 +1,14 @@
-import { GraduationCap, Mic, Music, PartyPopper, Sparkles, Swords, Tent, Theater, Trophy } from "lucide-react";
+import {
+  GraduationCap,
+  Mic,
+  Music,
+  PartyPopper,
+  Sparkles,
+  Swords,
+  Tent,
+  Theater,
+  Trophy,
+} from "lucide-react";
 import type { Genre } from "@beatmap/shared";
 
 const ICONS = {
@@ -13,7 +23,13 @@ const ICONS = {
   other: Sparkles,
 } satisfies Record<Genre, unknown>;
 
-export function GenreIcon({ genre, className }: { genre: Genre; className?: string }) {
+export function GenreIcon({
+  genre,
+  className,
+}: {
+  genre: Genre;
+  className?: string;
+}) {
   const Icon = ICONS[genre];
   return <Icon className={className} aria-hidden />;
 }

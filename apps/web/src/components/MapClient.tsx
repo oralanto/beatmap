@@ -5,7 +5,9 @@ import type { Meta } from "@/lib/api";
 
 const MapExplorer = dynamic(() => import("./MapExplorer"), {
   ssr: false,
-  loading: () => <div className="h-[calc(100dvh-3.5rem)] animate-pulse bg-zinc-100" />,
+  loading: () => (
+    <div className="h-[calc(100dvh-3.5rem)] animate-pulse bg-zinc-100" />
+  ),
 });
 
 export function MapClient({ meta }: { meta: Meta | null }) {

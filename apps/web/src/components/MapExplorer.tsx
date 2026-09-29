@@ -1,7 +1,12 @@
 "use client";
 
 import { Loader2, LocateFixed } from "lucide-react";
-import maplibregl, { type GeoJSONSource, type Map as MLMap, type Marker, type Popup } from "maplibre-gl";
+import maplibregl, {
+  type GeoJSONSource,
+  type Map as MLMap,
+  type Marker,
+  type Popup,
+} from "maplibre-gl";
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -14,9 +19,17 @@ import { EventCard } from "./EventCard";
 import { FilterDrawer } from "./FilterDrawer";
 import { Filters } from "./Filters";
 
-const STYLE_URL = process.env.NEXT_PUBLIC_MAP_STYLE_URL ?? "https://tiles.openfreemap.org/styles/positron";
+const STYLE_URL =
+  process.env.NEXT_PUBLIC_MAP_STYLE_URL ??
+  "https://tiles.openfreemap.org/styles/positron";
 const RADII = [25, 50, 100, 250, 500];
-const ZOOM_FOR_RADIUS: Record<number, number> = { 25: 10, 50: 9, 100: 8, 250: 6.5, 500: 5.5 };
+const ZOOM_FOR_RADIUS: Record<number, number> = {
+  25: 10,
+  50: 9,
+  100: 8,
+  250: 6.5,
+  500: 5.5,
+};
 
 type Coords = { lat: number; lng: number };
 
@@ -37,20 +50,34 @@ function NearMe({
 }) {
   const t = useTranslations("map");
   return (
-    <div className={compact ? "flex items-center gap-2 overflow-x-auto pb-1" : "space-y-3"}>
+    <div
+      className={
+        compact ? "flex items-center gap-2 overflow-x-auto pb-1" : "space-y-3"
+      }
+    >
       <button
         type="button"
         onClick={onToggle}
         aria-pressed={!!me}
         className={`inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold shadow-sm transition ${
-          me ? "bg-violet-600 text-white" : "bg-white text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
+          me
+            ? "bg-violet-600 text-white"
+            : "bg-white text-zinc-900 ring-1 ring-zinc-200 hover:bg-zinc-50"
         }`}
       >
-        {geoState === "locating" ? <Loader2 className="size-4 animate-spin" aria-hidden /> : <LocateFixed className="size-4" aria-hidden />}
+        {geoState === "locating" ? (
+          <Loader2 className="size-4 animate-spin" aria-hidden />
+        ) : (
+          <LocateFixed className="size-4" aria-hidden />
+        )}
         {geoState === "locating" ? t("locating") : t("nearMe")}
       </button>
       {me && (
-        <div className="flex shrink-0 items-center gap-1.5" role="group" aria-label={t("radius")}>
+        <div
+          className="flex shrink-0 items-center gap-1.5"
+          role="group"
+          aria-label={t("radius")}
+        >
           {RADII.map((r) => (
             <button
               key={r}
@@ -58,7 +85,9 @@ function NearMe({
               onClick={() => onRadius(r)}
               aria-pressed={radius === r}
               className={`rounded-full px-3 py-2 text-xs font-semibold ring-1 transition ${
-                radius === r ? "bg-zinc-900 text-white ring-zinc-900" : "bg-white text-zinc-700 ring-zinc-200 hover:bg-zinc-50"
+                radius === r
+                  ? "bg-zinc-900 text-white ring-zinc-900"
+                  : "bg-white text-zinc-700 ring-zinc-200 hover:bg-zinc-50"
               }`}
             >
               {r} km
@@ -66,7 +95,9 @@ function NearMe({
           ))}
         </div>
       )}
-      {geoState === "denied" && !compact && <p className="text-sm text-amber-700">{t("denied")}</p>}
+      {geoState === "denied" && !compact && (
+        <p className="text-sm text-amber-700">{t("denied")}</p>
+      )}
     </div>
   );
 }
@@ -90,9 +121,13 @@ export default function MapExplorer({ meta }: { meta: Meta | null }) {
   const [popupEl, setPopupEl] = useState<HTMLDivElement | null>(null);
   const [selected, setSelected] = useState<EventDTO[]>([]);
   const [events, setEvents] = useState<EventDTO[]>([]);
-  const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
+  const [status, setStatus] = useState<"loading" | "ready" | "error">(
+    "loading",
+  );
   const [me, setMe] = useState<Coords | null>(null);
-  const [geoState, setGeoState] = useState<"idle" | "locating" | "denied">("idle");
+  const [geoState, setGeoState] = useState<"idle" | "locating" | "denied">(
+    "idle",
+  );
   const [radius, setRadius] = useState(100);
 
   const locate = useCallback(() => {
@@ -138,7 +173,11 @@ export default function MapExplorer({ meta }: { meta: Meta | null }) {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- flag the start of an external fetch
     setStatus("loading");
     fetch(`/api/events?${p}`, { signal: ctrl.signal })
-      .then((r) => (r.ok ? (r.json() as Promise<EventsResponse>) : Promise.reject(new Error(String(r.status)))))
+      .then((r) =>
+        r.ok
+          ? (r.json() as Promise<EventsResponse>)
+          : Promise.reject(new Error(String(r.status))),
+      )
       .then((data) => {
         setEvents(data.items);
         setStatus("ready");
@@ -168,7 +207,10 @@ export default function MapExplorer({ meta }: { meta: Meta | null }) {
       setMapUnavailable(true);
       return;
     }
-    map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
+    map.addControl(
+      new maplibregl.NavigationControl({ showCompass: false }),
+      "top-right",
+    );
     mapRef.current = map;
     setPopupEl(document.createElement("div"));
 
@@ -186,7 +228,15 @@ export default function MapExplorer({ meta }: { meta: Meta | null }) {
         source: "events",
         filter: ["has", "point_count"],
         paint: {
-          "circle-color": ["step", ["get", "point_count"], "#8b5cf6", 10, "#7c3aed", 30, "#5b21b6"],
+          "circle-color": [
+            "step",
+            ["get", "point_count"],
+            "#8b5cf6",
+            10,
+            "#7c3aed",
+            30,
+            "#5b21b6",
+          ],
           "circle-radius": ["step", ["get", "point_count"], 16, 10, 20, 30, 26],
           "circle-stroke-width": 3,
           "circle-stroke-color": "rgba(255,255,255,0.85)",
@@ -197,7 +247,11 @@ export default function MapExplorer({ meta }: { meta: Meta | null }) {
         type: "symbol",
         source: "events",
         filter: ["has", "point_count"],
-        layout: { "text-field": ["get", "point_count_abbreviated"], "text-font": ["Noto Sans Regular"], "text-size": 13 },
+        layout: {
+          "text-field": ["get", "point_count_abbreviated"],
+          "text-font": ["Noto Sans Regular"],
+          "text-size": 13,
+        },
         paint: { "text-color": "#ffffff" },
       });
       map.addLayer({
@@ -206,7 +260,12 @@ export default function MapExplorer({ meta }: { meta: Meta | null }) {
         source: "events",
         filter: ["!", ["has", "point_count"]],
         paint: {
-          "circle-color": ["match", ["get", "genre"], ...Object.entries(GENRE_COLOR).flat(), "#64748b"] as unknown as string,
+          "circle-color": [
+            "match",
+            ["get", "genre"],
+            ...Object.entries(GENRE_COLOR).flat(),
+            "#64748b",
+          ] as unknown as string,
           "circle-radius": 9,
           "circle-stroke-width": 2.5,
           "circle-stroke-color": "#ffffff",
@@ -214,15 +273,22 @@ export default function MapExplorer({ meta }: { meta: Meta | null }) {
       });
 
       map.on("click", "clusters", async (e) => {
-        const f = map.queryRenderedFeatures(e.point, { layers: ["clusters"] })[0];
+        const f = map.queryRenderedFeatures(e.point, {
+          layers: ["clusters"],
+        })[0];
         if (!f) return;
         const src = map.getSource("events") as GeoJSONSource;
         const zoom = await src.getClusterExpansionZoom(f.properties.cluster_id);
-        map.easeTo({ center: (f.geometry as GeoJSON.Point).coordinates as [number, number], zoom: zoom + 0.5 });
+        map.easeTo({
+          center: (f.geometry as GeoJSON.Point).coordinates as [number, number],
+          zoom: zoom + 0.5,
+        });
       });
 
       map.on("click", "points", (e) => {
-        const feats = map.queryRenderedFeatures(e.point, { layers: ["points"] });
+        const feats = map.queryRenderedFeatures(e.point, {
+          layers: ["points"],
+        });
         const list = [...new Set(feats.map((f) => f.properties.id as string))]
           .map((id) => eventsById.current.get(id))
           .filter((x): x is EventDTO => !!x);
@@ -230,15 +296,26 @@ export default function MapExplorer({ meta }: { meta: Meta | null }) {
         if (!first || list.length === 0) return;
         popupRef.current?.remove();
         setSelected(list);
-        const popup = new maplibregl.Popup({ className: "beatmap-popup", maxWidth: "none", offset: 14, focusAfterOpen: false })
-          .setLngLat((first.geometry as GeoJSON.Point).coordinates as [number, number])
+        const popup = new maplibregl.Popup({
+          className: "beatmap-popup",
+          maxWidth: "none",
+          offset: 14,
+          focusAfterOpen: false,
+        })
+          .setLngLat(
+            (first.geometry as GeoJSON.Point).coordinates as [number, number],
+          )
           .addTo(map);
         popup.on("close", () => setSelected([]));
         popupRef.current = popup;
       });
 
       for (const layer of ["clusters", "points"]) {
-        map.on("mouseenter", layer, () => (map.getCanvas().style.cursor = "pointer"));
+        map.on(
+          "mouseenter",
+          layer,
+          () => (map.getCanvas().style.cursor = "pointer"),
+        );
         map.on("mouseleave", layer, () => (map.getCanvas().style.cursor = ""));
       }
       setMapReady(true);
@@ -256,7 +333,8 @@ export default function MapExplorer({ meta }: { meta: Meta | null }) {
 
   // Attach the React-rendered card content to the popup.
   useEffect(() => {
-    if (popupRef.current && popupEl && selected.length) popupRef.current.setDOMContent(popupEl);
+    if (popupRef.current && popupEl && selected.length)
+      popupRef.current.setDOMContent(popupEl);
   }, [selected, popupEl]);
 
   // Push data into the map.
@@ -292,12 +370,22 @@ export default function MapExplorer({ meta }: { meta: Meta | null }) {
     meMarkerRef.current = null;
     if (!me) return;
     const el = document.createElement("div");
-    el.className = "size-4 rounded-full border-[3px] border-white bg-blue-500 shadow-[0_0_0_6px_rgba(59,130,246,0.25)]";
-    meMarkerRef.current = new maplibregl.Marker({ element: el }).setLngLat([me.lng, me.lat]).addTo(map);
-    map.flyTo({ center: [me.lng, me.lat], zoom: ZOOM_FOR_RADIUS[radius] ?? 8, duration: 800 });
+    el.className =
+      "size-4 rounded-full border-[3px] border-white bg-blue-500 shadow-[0_0_0_6px_rgba(59,130,246,0.25)]";
+    meMarkerRef.current = new maplibregl.Marker({ element: el })
+      .setLngLat([me.lng, me.lat])
+      .addTo(map);
+    map.flyTo({
+      center: [me.lng, me.lat],
+      zoom: ZOOM_FOR_RADIUS[radius] ?? 8,
+      duration: 800,
+    });
   }, [me, radius, mapReady]);
 
-  const countLabel = useMemo(() => t("results", { count: events.length }), [t, events.length]);
+  const countLabel = useMemo(
+    () => t("results", { count: events.length }),
+    [t, events.length],
+  );
 
   return (
     <div className="relative h-[calc(100dvh-3.5rem)] w-full overflow-hidden">
@@ -305,9 +393,14 @@ export default function MapExplorer({ meta }: { meta: Meta | null }) {
         <div ref={containerRef} className="h-full w-full" />
       </div>
       {mapUnavailable && (
-        <section className="absolute inset-0 overflow-y-auto bg-zinc-100 px-4 pb-24 pt-24 lg:pl-[380px] lg:pt-6" aria-live="polite">
+        <section
+          className="absolute inset-0 overflow-y-auto bg-zinc-100 px-4 pb-24 pt-24 lg:pl-95 lg:pt-6"
+          aria-live="polite"
+        >
           <div className="mx-auto max-w-5xl">
-            <h1 className="mb-4 text-lg font-semibold text-zinc-800">{t("mapUnavailable")}</h1>
+            <h1 className="mb-4 text-lg font-semibold text-zinc-800">
+              {t("mapUnavailable")}
+            </h1>
             {status === "loading" ? (
               <p className="text-sm text-zinc-600">{t("loading")}</p>
             ) : status === "error" ? (
@@ -316,7 +409,9 @@ export default function MapExplorer({ meta }: { meta: Meta | null }) {
               <p className="text-sm text-zinc-600">{countLabel}</p>
             ) : (
               <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-                {events.map((event) => <EventCard key={event.id} event={event} compact />)}
+                {events.map((event) => (
+                  <EventCard key={event.id} event={event} compact />
+                ))}
               </div>
             )}
           </div>
@@ -324,23 +419,51 @@ export default function MapExplorer({ meta }: { meta: Meta | null }) {
       )}
 
       {/* Desktop side panel */}
-      <aside className="absolute bottom-4 left-4 top-4 z-10 hidden w-[340px] flex-col gap-5 overflow-y-auto rounded-2xl bg-white/95 p-5 shadow-xl backdrop-blur lg:flex">
-        <NearMe me={me} geoState={geoState} radius={radius} onToggle={toggleMe} onRadius={setRadius} />
+      <aside className="absolute bottom-4 left-4 top-4 z-10 hidden w-85 flex-col gap-5 overflow-y-auto rounded-2xl bg-white/95 p-5 shadow-xl backdrop-blur lg:flex">
+        <NearMe
+          me={me}
+          geoState={geoState}
+          radius={radius}
+          onToggle={toggleMe}
+          onRadius={setRadius}
+        />
         <p className="text-sm font-medium text-zinc-600" aria-live="polite">
-          {status === "loading" ? t("loading") : status === "error" ? t("error") : countLabel}
+          {status === "loading"
+            ? t("loading")
+            : status === "error"
+              ? t("error")
+              : countLabel}
         </p>
         <Filters meta={meta} />
       </aside>
 
       {/* Mobile controls */}
       <div className="absolute inset-x-0 top-0 z-10 p-3 lg:hidden">
-        <NearMe me={me} geoState={geoState} radius={radius} onToggle={toggleMe} onRadius={setRadius} compact />
-        {geoState === "denied" && <p className="mt-2 rounded-lg bg-amber-50 p-2 text-xs text-amber-800 shadow">{t("denied")}</p>}
+        <NearMe
+          me={me}
+          geoState={geoState}
+          radius={radius}
+          onToggle={toggleMe}
+          onRadius={setRadius}
+          compact
+        />
+        {geoState === "denied" && (
+          <p className="mt-2 rounded-lg bg-amber-50 p-2 text-xs text-amber-800 shadow">
+            {t("denied")}
+          </p>
+        )}
       </div>
       <div className="absolute inset-x-0 bottom-0 z-10 flex items-center justify-between gap-2 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] lg:hidden">
         <FilterDrawer meta={meta} resultCount={events.length} />
-        <span className="rounded-full bg-white/95 px-3 py-2 text-xs font-semibold shadow-lg" aria-live="polite">
-          {status === "loading" ? t("loading") : status === "error" ? t("error") : countLabel}
+        <span
+          className="rounded-full bg-white/95 px-3 py-2 text-xs font-semibold shadow-lg"
+          aria-live="polite"
+        >
+          {status === "loading"
+            ? t("loading")
+            : status === "error"
+              ? t("error")
+              : countLabel}
         </span>
       </div>
 

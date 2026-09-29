@@ -9,7 +9,15 @@ import type { Meta } from "@/lib/api";
 import { Filters } from "./Filters";
 
 /** Mobile filter button + bottom sheet. Hidden on large screens where filters are docked. */
-export function FilterDrawer({ meta, resultCount, buttonClassName = "" }: { meta: Meta | null; resultCount?: number; buttonClassName?: string }) {
+export function FilterDrawer({
+  meta,
+  resultCount,
+  buttonClassName = "",
+}: {
+  meta: Meta | null;
+  resultCount?: number;
+  buttonClassName?: string;
+}) {
   const t = useTranslations("filters");
   const [open, setOpen] = useState(false);
   const active = countActive(parseFilters(useSearchParams()));
@@ -30,16 +38,35 @@ export function FilterDrawer({ meta, resultCount, buttonClassName = "" }: { meta
       >
         <SlidersHorizontal className="size-4" aria-hidden />
         {t("open")}
-        {active > 0 && <span className="rounded-full bg-violet-500 px-1.5 text-xs">{active}</span>}
+        {active > 0 && (
+          <span className="rounded-full bg-violet-500 px-1.5 text-xs">
+            {active}
+          </span>
+        )}
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true" aria-label={t("title")}>
-          <button type="button" aria-label="Close" className="absolute inset-0 bg-black/40" onClick={() => setOpen(false)} />
+        <div
+          className="fixed inset-0 z-50 lg:hidden"
+          role="dialog"
+          aria-modal="true"
+          aria-label={t("title")}
+        >
+          <button
+            type="button"
+            aria-label="Close"
+            className="absolute inset-0 bg-black/40"
+            onClick={() => setOpen(false)}
+          />
           <div className="absolute inset-x-0 bottom-0 flex max-h-[85dvh] flex-col rounded-t-3xl bg-white shadow-2xl">
             <div className="flex items-center justify-between px-5 pb-2 pt-4">
               <h2 className="text-lg font-semibold">{t("title")}</h2>
-              <button type="button" onClick={() => setOpen(false)} aria-label="Close" className="rounded-full p-2 hover:bg-zinc-100">
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                aria-label="Close"
+                className="rounded-full p-2 hover:bg-zinc-100"
+              >
                 <X className="size-5" />
               </button>
             </div>
@@ -47,7 +74,11 @@ export function FilterDrawer({ meta, resultCount, buttonClassName = "" }: { meta
               <Filters meta={meta} />
             </div>
             <div className="border-t border-zinc-100 p-4">
-              <button type="button" onClick={() => setOpen(false)} className="w-full rounded-xl bg-violet-600 py-3 font-semibold text-white">
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                className="w-full rounded-xl bg-violet-600 py-3 font-semibold text-white"
+              >
                 {t("showResults")}
                 {resultCount !== undefined ? ` (${resultCount})` : ""}
               </button>

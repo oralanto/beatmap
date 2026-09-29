@@ -1,4 +1,10 @@
-import { isGenre, isStyle, resolveDateRange, type Genre, type Style } from "@beatmap/shared";
+import {
+  isGenre,
+  isStyle,
+  resolveDateRange,
+  type Genre,
+  type Style,
+} from "@beatmap/shared";
 
 export type SearchParams = Record<string, string | string[] | undefined>;
 
@@ -9,7 +15,8 @@ export interface Filters {
   q: string;
 }
 
-const first = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
+const first = (v: string | string[] | undefined) =>
+  Array.isArray(v) ? v[0] : v;
 const csv = (v: string | string[] | undefined) =>
   (first(v) ?? "")
     .split(",")
@@ -17,7 +24,8 @@ const csv = (v: string | string[] | undefined) =>
     .filter(Boolean);
 
 export function parseFilters(sp: SearchParams | URLSearchParams): Filters {
-  const get = (k: string) => (sp instanceof URLSearchParams ? (sp.get(k) ?? undefined) : sp[k]);
+  const get = (k: string) =>
+    sp instanceof URLSearchParams ? (sp.get(k) ?? undefined) : sp[k];
   const when = first(get("when")) ?? "all";
   return {
     when: /^(all|month|3months|\d{4})$/.test(when) ? when : "all",
@@ -45,5 +53,10 @@ export function toApiParams(f: Filters): URLSearchParams {
 }
 
 export function countActive(f: Filters): number {
-  return (f.when !== "all" ? 1 : 0) + f.genres.length + f.styles.length + (f.q ? 1 : 0);
+  return (
+    (f.when !== "all" ? 1 : 0) +
+    f.genres.length +
+    f.styles.length +
+    (f.q ? 1 : 0)
+  );
 }

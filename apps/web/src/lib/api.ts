@@ -21,6 +21,8 @@ async function get<T>(path: string): Promise<T | null> {
   }
 }
 
-export const fetchEvents = (qs: string) => get<EventsResponse>(`/api/events?${qs}`);
-export const fetchEvent = (id: string) => get<EventDTO>(`/api/events/${encodeURIComponent(id)}`);
+export const fetchEvents = (qs: string) =>
+  get<EventsResponse>(`/api/events?${qs}`);
+export const fetchEvent = (id: string) =>
+  get<EventDTO>(`/api/events/${encodeURIComponent(id)}`);
 export const fetchMeta = () => get<Meta>("/api/meta");

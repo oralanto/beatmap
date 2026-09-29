@@ -14,8 +14,13 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-zinc-200 bg-white/85 backdrop-blur">
       <div className="mx-auto flex h-14 max-w-7xl items-center gap-2 px-4 sm:px-6">
-        <Link href="/" className="mr-auto flex items-center gap-2 font-extrabold tracking-tight">
-          <span className="grid size-8 place-items-center rounded-lg bg-gradient-to-br from-violet-600 to-fuchsia-500 text-white">♪</span>
+        <Link
+          href="/"
+          className="mr-auto flex items-center gap-2 font-extrabold tracking-tight"
+        >
+          <span className="grid size-8 place-items-center rounded-lg bg-gradient-to-br from-violet-600 to-fuchsia-500 text-white">
+            ♪
+          </span>
           <span className="hidden text-lg min-[400px]:inline">{SITE_NAME}</span>
         </Link>
         <nav className="flex items-center gap-1">
