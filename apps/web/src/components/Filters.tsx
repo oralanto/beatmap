@@ -135,9 +135,6 @@ export function Filters({
             onClick={() => toggle("genre", g)}
           >
             {t(`genres.${g}`)}
-            {meta?.genres[g] ? (
-              <span className="ml-1.5 opacity-60">{meta.genres[g]}</span>
-            ) : null}
           </button>
         ))}
       </Section>
@@ -152,9 +149,6 @@ export function Filters({
             onClick={() => toggle("style", s)}
           >
             {t(`styles.${s}`)}
-            {meta?.styles[s] ? (
-              <span className="ml-1.5 opacity-60">{meta.styles[s]}</span>
-            ) : null}
           </button>
         ))}
       </Section>

@@ -2,9 +2,7 @@
 
 import { SlidersHorizontal, X } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { countActive, parseFilters } from "@/lib/filters";
 import type { Meta } from "@/lib/api";
 import { Filters } from "./Filters";
 
@@ -20,8 +18,6 @@ export function FilterDrawer({
 }) {
   const t = useTranslations("filters");
   const [open, setOpen] = useState(false);
-  const active = countActive(parseFilters(useSearchParams()));
-
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => {
@@ -38,9 +34,9 @@ export function FilterDrawer({
       >
         <SlidersHorizontal className="size-4" aria-hidden />
         {t("open")}
-        {active > 0 && (
+        {resultCount !== undefined && (
           <span className="rounded-full bg-violet-500 px-1.5 text-xs">
-            {active}
+            {resultCount}
           </span>
         )}
       </button>
@@ -80,7 +76,6 @@ export function FilterDrawer({
                 className="w-full rounded-xl bg-violet-600 py-3 font-semibold text-white"
               >
                 {t("showResults")}
-                {resultCount !== undefined ? ` (${resultCount})` : ""}
               </button>
             </div>
           </div>
